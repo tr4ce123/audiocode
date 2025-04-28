@@ -1,5 +1,5 @@
 from openai import OpenAI
-import dotenv, os, base64, io
+import dotenv, os, base64, io, re
 
 dotenv.load_dotenv()
 
@@ -22,6 +22,14 @@ class TranscriptionService:
             response_format="verbose_json",
         )
 
-        print(transcription.words)
+        full_text = transcription.text
+        match = re.search(r"on line (\d+),?\s+(.*)", full_text, flags=re.IGNORECASE)
 
-        return transcription.words
+        if match:
+            line_number = int(match.group(1))
+            instruction = match.group(2).strip()
+        else:
+            line_number = None
+            instruction = full_text
+
+        return instruction, line_number
