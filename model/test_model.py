@@ -57,7 +57,8 @@ examples = [
     "Create a for loop that prints even numbers from 2 to 10",
     "Write an if-elif-else block that checks if a number n is less than 0, equal to 0, or greater than 0 and prints a message",
     "Create a list comprehension that builds a list of squares of numbers from 0 to 4",
-    "Write a function named dfs that takes in a parameter start_node."
+    "Write a function named dfs that takes in a parameter start_node.",
+    "create a blank line"
 ]
 
 for example in examples:

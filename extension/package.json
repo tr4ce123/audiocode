@@ -20,6 +20,10 @@
       {
         "command": "audiocode.listen",
         "title": "Record Audio"
+      },
+      {
+        "command": "audiocode.stopListening",
+        "title": "Stop Listening"
       }
     ],
     "keybindings": [

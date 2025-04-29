@@ -108,9 +108,33 @@ async def upload_audio(request: Request):
 
 @app.get("/poll-data/{token}")
 async def poll_data(token: str):
-    code = None
-    # we want the latest, not-yet read transcription from the database 
-    return {"code": code}
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT code, line_number
+        FROM transcriptions
+        WHERE token = %s
+        ORDER BY created_at ASC
+        LIMIT 1;
+    """, (token,))
+    row = cur.fetchone()
+
+    if not row:
+        return {"code": None}
+    
+    code, line_number = row
+
+    cur.execute("""
+        DELETE FROM transcriptions
+        WHERE token = %s AND code = %s
+    """, (token, code))
+    conn.commit()
+
+    cur.close()
+    conn.close()
+
+    return {"code": code, "line_number": line_number}
 
 @app.get("/transcriptions")
 async def get_all_transcriptions():
