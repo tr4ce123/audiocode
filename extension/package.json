@@ -3,10 +3,11 @@
   "displayName": "Audiocode",
   "description": "Turn voice into precise code",
   "publisher": "GregoryGlasby",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.99.0"
   },
+  "icon": "images/icon.png",
   "categories": [
     "Other"
   ],
