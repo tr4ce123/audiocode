@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
+// run "vsce package" then "vsce publish minor" to create a new version
+
 export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Congratulations, your extension "audiocode" is now active!');

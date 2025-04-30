@@ -1,7 +1,8 @@
 {
   "name": "audiocode",
-  "displayName": "audiocode",
+  "displayName": "Audiocode",
   "description": "Turn voice into precise code",
+  "publisher": "GregoryGlasby",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.99.0"
@@ -35,6 +36,11 @@
       }
     ]
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tr4ce123/audiocode"
+  },
+  "license": "MIT",
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "npm run check-types && npm run lint && node esbuild.js",
