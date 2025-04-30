@@ -1,11 +1,11 @@
 # AudioCode
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Python-3.9+-blue.svg" alt="Python Version">
-  <img src="https://img.shields.io/badge/FastAPI-0.100.0-green.svg" alt="FastAPI Version">
-  <img src="https://img.shields.io/badge/TypeScript-5.0+-blue.svg" alt="TypeScript Version">
+  <img src="https://img.shields.io/badge/Python-3.11+-blue.svg" alt="Python Version">
+  <img src="https://img.shields.io/badge/FastAPI-green.svg" alt="FastAPI Version">
+  <img src="https://img.shields.io/badge/TypeScript-blue.svg" alt="TypeScript Version">
   <img src="https://img.shields.io/badge/AWS-EC2-orange.svg" alt="AWS EC2">
-  <img src="https://img.shields.io/badge/PostgreSQL-14+-blue.svg" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/PostgreSQL-blue.svg" alt="PostgreSQL">
 </div>
 
 ## Overview
