@@ -2,3 +2,4 @@
 .env
 .python-version
 /.venv
+/finetuned_model

@@ -8,7 +8,7 @@
 
 ## Overview
 
-AudioCode is a VS Code extension that allows you to write Python code using voice commands. Simply speak your instructions, and the extension will generate the corresponding Python code in your editor. Perfect for accessibility and hands-free coding!
+AudioCode is a VS Code extension that allows you to write Python code using voice commands. Simply speak your instructions, and the extension will generate the corresponding Python code in your editor. Perfect for accessibility and hands-free coding! You can even specify the line number by saying "On line (line number)... (rest of command)".
 
 ## Installation
 

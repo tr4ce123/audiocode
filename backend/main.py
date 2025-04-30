@@ -47,7 +47,7 @@ app.add_middleware(
 def get_db_connection():
     conn = psycopg2.connect(
         host=os.getenv("DATABASE_HOST"),
-        port=int(os.getenv("DATABASE_PORT")),
+        port=int(os.getenv("DATABASE_PORT", 5432)),
         database=os.getenv("DATABASE_NAME"),
         user=os.getenv("DATABASE_USER"),
         password=os.getenv("DATABASE_PASSWORD"),
@@ -78,8 +78,6 @@ async def upload_audio(request: Request):
     
     model_service = ModelService()
     code = model_service.generate_code(instruction=instruction)
-    print(f"Instruction: {instruction}")
-    print(f"Generated Code: {code}")
 
     con = get_db_connection()
     cur = con.cursor()
