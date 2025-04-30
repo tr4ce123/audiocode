@@ -14,10 +14,6 @@
   "contributes": {
     "commands": [
       {
-        "command": "audiocode.helloWorld",
-        "title": "Hello World"
-      },
-      {
         "command": "audiocode.listen",
         "title": "Record Audio"
       },
@@ -30,6 +26,11 @@
       {
         "command": "audiocode.listen",
         "key": "ctrl+shift+l",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "audiocode.stopListening",
+        "key": "ctrl+shift+k",
         "when": "editorTextFocus"
       }
     ]

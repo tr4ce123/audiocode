@@ -54,10 +54,6 @@ def get_db_connection():
     )
     return conn
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
 @app.get("/db-test")
 def test_db():
     conn = get_db_connection()
@@ -85,7 +81,6 @@ async def upload_audio(request: Request):
     print(f"Instruction: {instruction}")
     print(f"Generated Code: {code}")
 
-    # TODO: put the transcription into the database with the current timestamp (should be defaulted to now) and the token as the primary key
     con = get_db_connection()
     cur = con.cursor()
 

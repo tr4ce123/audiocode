@@ -1,26 +1,13 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Congratulations, your extension "audiocode" is now active!');
 
-	const disposable = vscode.commands.registerCommand('audiocode.helloWorld', () => {
-		vscode.window.showInformationMessage('Changed Message!');
-		
-		const editor = vscode.window.activeTextEditor;
-		if (editor) {
-			const snippet = new vscode.SnippetString("for i in range(n): \n\tprint('Hello')");
-			editor.insertSnippet(snippet);
-		}
-	});
-
 	let pollIntervalId: NodeJS.Timeout | undefined = undefined;
+	let pollTimeoutId: NodeJS.Timeout | undefined = undefined;
 
 	const listen = vscode.commands.registerCommand('audiocode.listen', async () => {
 		const token = uuidv4();
@@ -32,7 +19,6 @@ export function activate(context: vscode.ExtensionContext) {
 			try {
 				const response = await axios.get(`http://127.0.0.1:8000/poll-data/${token}`);
 				const { code, line_number } = response.data;
-				console.log(code, line_number);
 				
 				if (code) {					
 					console.log("Received transcription");
@@ -78,7 +64,24 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		}
 
+		if (pollIntervalId) {
+			clearInterval(pollIntervalId);
+		}
+		if (pollTimeoutId) {
+			clearTimeout(pollTimeoutId);
+		}
+
 		pollIntervalId = setInterval(pollApi, 3000);
+
+		// stop polling after 5 minutes
+		pollTimeoutId = setTimeout(() => {
+			if (pollIntervalId) {
+				clearInterval(pollIntervalId);
+				pollIntervalId = undefined;
+				console.log('Automatically stopped polling after 5 minutes');
+				vscode.window.showInformationMessage('AudioCode: Recording session timed out after 5 minutes. Please start a new recording if needed.');
+			}
+		}, 5 * 60 * 1000);
 	});
 
 	const stopListening = vscode.commands.registerCommand('audiocode.stopListening', () => {
@@ -87,13 +90,14 @@ export function activate(context: vscode.ExtensionContext) {
 			pollIntervalId = undefined;
 			console.log('Stopped polling');
 		}
+		if (pollTimeoutId) {
+			clearTimeout(pollTimeoutId);
+			pollTimeoutId = undefined;
+		}
 	});
 
-	context.subscriptions.push(disposable);
 	context.subscriptions.push(listen);
 	context.subscriptions.push(stopListening);
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}
-
