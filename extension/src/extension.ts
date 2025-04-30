@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 		async function pollApi() {
 			console.log("Poll Called");
 			try {
-				const response = await axios.get(`http://127.0.0.1:8000/poll-data/${token}`);
+				const response = await axios.get(`https://audiocodeapi.com/poll-data/${token}`);
 				const { code, line_number } = response.data;
 				
 				if (code) {					

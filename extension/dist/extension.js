@@ -15040,15 +15040,8 @@ var {
 // src/extension.ts
 function activate(context) {
   console.log('Congratulations, your extension "audiocode" is now active!');
-  const disposable = vscode.commands.registerCommand("audiocode.helloWorld", () => {
-    vscode.window.showInformationMessage("Changed Message!");
-    const editor = vscode.window.activeTextEditor;
-    if (editor) {
-      const snippet = new vscode.SnippetString("for i in range(n): \n	print('Hello')");
-      editor.insertSnippet(snippet);
-    }
-  });
   let pollIntervalId = void 0;
+  let pollTimeoutId = void 0;
   const listen = vscode.commands.registerCommand("audiocode.listen", async () => {
     const token = v4_default();
     const url2 = `https://microphone-project.vercel.app/microphone?token=${token}`;
@@ -15056,9 +15049,8 @@ function activate(context) {
     async function pollApi() {
       console.log("Poll Called");
       try {
-        const response = await axios_default.get(`http://127.0.0.1:8000/poll-data/${token}`);
+        const response = await axios_default.get(`https://audiocodeapi.com/poll-data/${token}`);
         const { code, line_number } = response.data;
-        console.log(code, line_number);
         if (code) {
           console.log("Received transcription");
           const editor = vscode.window.activeTextEditor;
@@ -15078,7 +15070,6 @@ function activate(context) {
               if (!text.trim()) {
                 continue;
               }
-              ;
               const m = text.match(/^(\s*)/);
               if (m && m[1].length > 0) {
                 baseIndent = m[1];
@@ -15095,7 +15086,21 @@ function activate(context) {
         console.error("Polling error", e);
       }
     }
+    if (pollIntervalId) {
+      clearInterval(pollIntervalId);
+    }
+    if (pollTimeoutId) {
+      clearTimeout(pollTimeoutId);
+    }
     pollIntervalId = setInterval(pollApi, 3e3);
+    pollTimeoutId = setTimeout(() => {
+      if (pollIntervalId) {
+        clearInterval(pollIntervalId);
+        pollIntervalId = void 0;
+        console.log("Automatically stopped polling after 5 minutes");
+        vscode.window.showInformationMessage("AudioCode: Recording session timed out after 5 minutes. Please start a new recording if needed.");
+      }
+    }, 5 * 60 * 1e3);
   });
   const stopListening = vscode.commands.registerCommand("audiocode.stopListening", () => {
     if (pollIntervalId) {
@@ -15103,8 +15108,11 @@ function activate(context) {
       pollIntervalId = void 0;
       console.log("Stopped polling");
     }
+    if (pollTimeoutId) {
+      clearTimeout(pollTimeoutId);
+      pollTimeoutId = void 0;
+    }
   });
-  context.subscriptions.push(disposable);
   context.subscriptions.push(listen);
   context.subscriptions.push(stopListening);
 }

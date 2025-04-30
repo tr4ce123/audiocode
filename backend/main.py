@@ -7,6 +7,12 @@ from ModelService import ModelService
 
 dotenv.load_dotenv()
 
+# FOR EC2 INSTANCE:
+# to reattach to the tmux session run "tmux attach -t myapp" after sshing into the instance
+# to remake a tmux session "tmux new -s myapp"
+# run "exit" to exit the session
+# to detach without killing it run hit "Ctrl + B, then D"
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # code to run on startup
